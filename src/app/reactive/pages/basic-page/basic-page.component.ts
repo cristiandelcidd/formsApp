@@ -23,10 +23,27 @@ export class BasicPageComponent implements OnInit {
     this.myForm.reset({ price: 0, inStorage: 0 });
   }
 
-  onSave(): void {
-    if (this.myForm.invalid) {
-      this.myForm.markAllAsTouched();
+  isValidField(field: string): boolean | null {
+    // prettier-ignore
+    return this.myForm.controls[field].errors && this.myForm.controls[field].touched;
+  }
+
+  getFieldError(field: string): string | null {
+    if (!this.myForm.controls[field]) return null;
+
+    const errors = this.myForm.controls[field].errors || {};
+
+    for (const key of Object.keys(errors)) {
+      if (key === 'required') return 'El campo es requerido';
+      else if (key === 'minlength')
+        return `Este campo requiere al menos ${errors['minlength'].requiredLength} letras`;
     }
+
+    return null;
+  }
+
+  onSave(): void {
+    if (this.myForm.invalid) return this.myForm.markAllAsTouched();
 
     this.myForm.reset({ price: 0, inStorage: 0 });
   }
