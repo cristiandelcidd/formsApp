@@ -41,11 +41,6 @@ export class DynamicPage {
     this.newFavorite.reset();
   }
 
-  isValidField(field: string): boolean | null {
-    // prettier-ignore
-    return this.myForm.controls[field].errors && this.myForm.controls[field].touched;
-  }
-
   onSubmit(): void {
     if (this.myForm.invalid) {
       this.myForm.markAllAsTouched();
