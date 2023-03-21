@@ -8,29 +8,41 @@ import { EmailValidator } from '../../../shared/validators/email-validator.servi
   templateUrl: './register-page.component.html',
 })
 export class RegisterPageComponent {
-  public myForm: FormGroup = this.formBuilder.group({
-    name: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(this.validatorsService.firstNameAndLastnamePattern),
+  public myForm: FormGroup = this.formBuilder.group(
+    {
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            this.validatorsService.firstNameAndLastnamePattern
+          ),
+        ],
       ],
-    ],
-    email: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(this.validatorsService.emailPattern),
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(this.validatorsService.emailPattern),
+        ],
+        [this.emailValidator],
       ],
-      [this.emailValidator],
-    ],
-    username: [
-      '',
-      [Validators.required, this.validatorsService.cantBeCristian],
-    ],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required]],
-  });
+      username: [
+        '',
+        [Validators.required, this.validatorsService.cantBeCristian],
+      ],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
+    },
+    {
+      validators: [
+        this.validatorsService.isFieldOneEqualFieldTwo(
+          'password',
+          'confirmPassword'
+        ),
+      ],
+    }
+  );
 
   constructor(
     private formBuilder: FormBuilder,
